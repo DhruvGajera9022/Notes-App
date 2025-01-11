@@ -1,5 +1,7 @@
 # Notes App (MERN Stack)
 
+![Dashboard Screenshot](./frontend/src/assets/Notes.png)
+
 This is a feature-rich notes application built using the MERN stack (MongoDB, Express.js, React.js with Vite, and Node.js). The app includes functionalities for user authentication, note management, and advanced features like pinning and searching notes.
 
 ## Features
