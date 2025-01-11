@@ -30,7 +30,7 @@ This is a feature-rich notes application built using the MERN stack (MongoDB, Ex
 
 - Swagger UI is integrated into the backend to provide a detailed API documentation for easier exploration and testing of the API endpoints.
 - Access the Swagger UI at the following URL:
-  Swagger UI
+  `https://swagger.io/tools/swagger-ui/`
 
 ---
 
