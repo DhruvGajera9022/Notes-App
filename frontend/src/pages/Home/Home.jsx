@@ -160,8 +160,17 @@ const Home = () => {
   useEffect(() => {
     getAllNotes();
     getUserInfo();
+    getToken();
     return () => {};
   }, []);
+
+  // Authentication
+  const getToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  };
 
   return (
     <>
