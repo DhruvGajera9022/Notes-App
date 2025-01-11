@@ -1,0 +1,350 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Notes-App",
+    "description": "This API provides Authentication, Crud of notes, search and Pinning.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8002",
+  "basePath": "/",
+  "schemes": ["http"],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Provide the token in the format: `Bearer <token>`"
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "User authentication and registration"
+    },
+    { "name": "User Profile", "description": "Managing user profile" },
+    { "name": "Notes", "description": "Managing notes" }
+  ],
+  "paths": {
+    "/create-account": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Register a new user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": {
+                  "type": "string",
+                  "example": "Jane Doe",
+                  "description": "Name of the user."
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jane.doe@example.com",
+                  "description": "Email of the user."
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "Password of the user."
+                }
+              },
+              "required": ["fullName", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "User successfully registered." },
+          "400": { "description": "Invalid input data." }
+        }
+      }
+    },
+
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Authenticate a user and return an authorization token.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "user@example.com",
+                  "description": "The email address of the user."
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "The password for the user account."
+                }
+              },
+              "required": ["email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Login successful, returns a token." },
+          "401": { "description": "Invalid credentials provided." },
+          "400": { "description": "Missing or invalid parameters." }
+        }
+      }
+    },
+
+    "/get-user": {
+      "get": {
+        "tags": ["User Profile"],
+        "description": "Fetch details of the currently authenticated user.",
+        "responses": {
+          "200": { "description": "User details retrieved successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/add-note": {
+      "post": {
+        "tags": ["Notes"],
+        "description": "Create a new note.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Meeting Notes",
+                  "description": "The title of the note."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Discuss project milestones and deadlines.",
+                  "description": "The content of the note."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["work", "meeting"],
+                  "description": "Tags to categorize the note."
+                }
+              },
+              "required": ["title", "content"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Note successfully created."
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "401": {
+            "description": "Unauthorized access. Token is missing or invalid."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+
+    "/edit-note/{noteId}": {
+      "put": {
+        "tags": ["Notes"],
+        "description": "Edit an existing note.",
+        "parameters": [
+          {
+            "name": "noteId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique identifier of the note to be edited."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Updated Meeting Notes",
+                  "description": "The updated title of the note."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Updated discussion points on project milestones and deadlines.",
+                  "description": "The updated content of the note."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["work", "meeting", "important"],
+                  "description": "The updated tags to categorize the note."
+                }
+              },
+              "required": ["title", "content"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note successfully updated."
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "401": {
+            "description": "Unauthorized access. Token is missing or invalid."
+          },
+          "404": {
+            "description": "Note not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+
+    "/delete-note/{noteId}": {
+      "delete": {
+        "tags": ["Notes"],
+        "description": "Delete an existing note.",
+        "parameters": [
+          {
+            "name": "noteId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique identifier of the note to be deleted."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note successfully deleted."
+          },
+          "400": {
+            "description": "Invalid note ID or request data."
+          },
+          "401": {
+            "description": "Unauthorized access. Token is missing or invalid."
+          },
+          "404": {
+            "description": "Note not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+
+    "/get-all-notes": {
+      "get": {
+        "tags": ["Notes"],
+        "description": "Fetch all user's notes.",
+        "responses": {
+          "200": { "description": "notes details retrieved successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/update-note-pinned/{noteId}": {
+      "put": {
+        "tags": ["Notes"],
+        "description": "Update the pinned status of a specific note.",
+        "parameters": [
+          {
+            "name": "noteId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique identifier of the note to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isPinned": {
+                  "type": "boolean",
+                  "example": true,
+                  "description": "Indicates whether the note should be pinned (`true`) or unpinned (`false`)."
+                }
+              },
+              "required": ["isPinned"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pinned status of the note successfully updated."
+          },
+          "400": {
+            "description": "Invalid note ID or request data."
+          },
+          "401": {
+            "description": "Unauthorized access. Token is missing or invalid."
+          },
+          "404": {
+            "description": "Note not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+
+    "/search-note": {
+      "get": {
+        "tags": ["Notes"],
+        "description": "Update the pinned status of a specific note.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

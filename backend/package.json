@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "generateDoc": "node swagger.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +18,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.3",
     "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

@@ -26,6 +26,12 @@ This is a feature-rich notes application built using the MERN stack (MongoDB, Ex
   - **Notes Management**: Add, Edit, Delete, Pin, Search Notes.
   - **Security**: JWT-based authentication and authorization.
 
+### Swagger UI Integration
+
+- Swagger UI is integrated into the backend to provide a detailed API documentation for easier exploration and testing of the API endpoints.
+- Access the Swagger UI at the following URL:
+  Swagger UI
+
 ---
 
 ## Installation and Setup
@@ -57,6 +63,7 @@ This is a feature-rich notes application built using the MERN stack (MongoDB, Ex
    npm start
    ```
    The server will run on `http://localhost:8002`.
+   The documentation on `http://localhost:8002/api-docs`
 
 ### Frontend Setup
 
